@@ -1,0 +1,46 @@
+ublic class ButtonGrid {
+
+    private static final int GRID_SIZE = 16;
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ButtonGrid::createAndShowGUI);
+    }
+
+    private static void createAndShowGUI() {
+        JButton[][] buttons = new JButton[GRID_SIZE][GRID_SIZE];
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
+
+        // Load the BMP image
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("C:\\Users\\omone\\OneDrive\\Desktop\\2colour_elephant.bmp"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Calculate the scale factor to fit the image into the grid
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+        int scaleX = imgWidth / GRID_SIZE;
+        int scaleY = imgHeight / GRID_SIZE;
+
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                buttons[i][j] = new JButton();
+                buttons[i][j].setOpaque(true);
+
+                // Determine the color from the BMP image
+                int pixelColor = image.getRGB(j * scaleX, i * scaleY);
+                Color color = new Color(pixelColor);
+
+                buttons[i][j].setBackground(color);
+
+                int finalJ = j;
+                int finalI = i;
+
+                panel1.add(buttons[i][j]);
+            }
+        }
+
